@@ -1,13 +1,31 @@
-export default {
-    tool: tool
+// export default {
+//     tool: tool
+// };
+function forEach(data, callback) {
+    var i, len;
+    if (Array.isArray(data)) {
+        data.forEach(function (item) {
+            callback(item);
+        })
+    } else {
+        for (i in data) {
+            callback(data[i]);
+        }
+    }
 }
-
-function tool(id, opt) {
+function tool(id, tag) {
     var tpl = document.querySelector("#" + id).innerHTML;
-    opt = opt || {
-        openTag: "{{",
-        closeTag: "}}"
-    };
+    if (tag && tag == "native") {
+        opt = {
+            openTag: "<%",
+            closeTag: "%>"
+        }
+    } else {
+        opt = {
+            openTag: "{{",
+            closeTag: "}}"
+        }
+    }
     transform(tpl, opt);
 }
 function transform(tpl, opt) {
@@ -19,18 +37,18 @@ function transform(tpl, opt) {
         var $0 = code[0];
         var $1 = code[1];
         if (code.length == 1) {
-            main += html($0)
+            main += $0;
         } else {
-            main += logic($0);
+            main += parser($0);
             if ($1) {
                 main += $1;
             }
         }
     });
+    console.log(main);
+    return main;
 }
-function logic(code) {
-    code = parser(code)
-}
+
 function parser(code) {
     code = code.replace("/^\s/", "");
     var split = code.split(" ");
@@ -38,7 +56,7 @@ function parser(code) {
     var args = split.join("");
     switch (key) {
         case "if":
-            code = '#if(' + args + '){';
+            code = '#if(' + args + ')';
             break;
         case "/if":
         case "/each":
@@ -48,11 +66,26 @@ function parser(code) {
             var list = split[0];
             var as = split[1] || "as";
             var item = split[2] || "$value";
-            var index = split[3] || "$index";
-            code = "#foreach("+ item + "in"+ list +")"
+            var index = split[3];
+            code = "#foreach(" + item + " in " + list + ")";
+            if (index) {
+                code += "\n#set(" + index + " = #foreach.index)";
+            }
+            break;
         case "else":
+            var param = split.shift();
+            var con = split.join("");
+            if (param && param.indexOf("if") > -1) {
+                code = "#elseif(" + con + ")";
+            } else {
+                code = "#else";
+            }
+        case "include":
+            code = "#include";
+            break;
         default:
-            code = "${"+ args +"}";
+            code = "${" + code + "}";
 
     }
+    return code;
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script id="test" type="text/html">
+{{if isAdmin}}
+
+<h1>{{title}}</h1>
+<ul>
+    {{each list as value i}}
+        <li>索引 {{i + 1}} ：{{value}}</li>
+    {{/each}}
+</ul>
+
+{{/if}}
+</script>
+<script id="s" type="text/html">
+    <%if (admin){%>
+    <%include('admin_content')%>
+
+    <%for (var i=0;i<list.length;i++) {%>
+        <div><%=i%>. <%=list[i].user%></div>
+    <%}%>
+<%}%>
+</script>
+<script src="../src/art-velocity.js"></script>
+<script>
+    tool("test");
+</script>
+</body>
+</html>

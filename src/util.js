@@ -1,6 +1,6 @@
-export default {
-    forEach: each
-};
+// export default {
+//     forEach: each
+// };
 function each(data,callback) {
     var i,len;
     if(Array.isArray(data)){
