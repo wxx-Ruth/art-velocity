@@ -17,15 +17,7 @@
 
 {{/if}}
 </script>
-<script id="s" type="text/html">
-    <%if (admin){%>
-    <%include('admin_content')%>
 
-    <%for (var i=0;i<list.length;i++) {%>
-        <div><%=i%>. <%=list[i].user%></div>
-    <%}%>
-<%}%>
-</script>
 <script src="../src/art-velocity.js"></script>
 <script>
     tool("test");

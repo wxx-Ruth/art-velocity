@@ -13,26 +13,11 @@ function forEach(data, callback) {
         }
     }
 }
-function tool(id, tag) {
-    var tpl = document.querySelector("#" + id).innerHTML;
-    if (tag && tag == "native") {
-        opt = {
-            openTag: "<%",
-            closeTag: "%>"
-        }
-    } else {
-        opt = {
-            openTag: "{{",
-            closeTag: "}}"
-        }
-    }
-    transform(tpl, opt);
-}
-function transform(tpl, opt) {
-    var openTag = opt.openTag,
-        closeTag = opt.closeTag;
+function transform(content, opt) {
+    var openTag = opt && opt.openTag||"{{",
+        closeTag = opt && opt.closeTag || "}}";
     var main = "";
-    forEach(tpl.split(openTag), function (code) {
+    forEach(content.split(openTag), function (code) {
         code = code.split(closeTag);
         var $0 = code[0];
         var $1 = code[1];
@@ -45,7 +30,6 @@ function transform(tpl, opt) {
             }
         }
     });
-    console.log(main);
     return main;
 }
 
@@ -74,12 +58,13 @@ function parser(code) {
             break;
         case "else":
             var param = split.shift();
-            var con = split.join("");
-            if (param && param.indexOf("if") > -1) {
+            var con = split.join(" ");
+            if (param && param == "if") {
                 code = "#elseif(" + con + ")";
             } else {
                 code = "#else";
             }
+            break;
         case "include":
             code = "#include";
             break;
@@ -89,3 +74,4 @@ function parser(code) {
     }
     return code;
 }
+module.exports = transform;
