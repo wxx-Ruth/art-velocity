@@ -1,6 +1,6 @@
 var util = require("./util");
 function transform(content, opt) {
-    var openTag = opt && opt.openTag||"{{",
+    var openTag = opt && opt.openTag || "{{",
         closeTag = opt && opt.closeTag || "}}";
     var main = "";
     util.each(content.split(openTag), function (code) {
@@ -23,7 +23,7 @@ function parser(code) {
     code = code.replace("/^\s/", "");
     var split = code.split(" ");
     var key = split.shift();
-    var args = split.join("");
+    var args = "$" + split.join("");
     switch (key) {
         case "if":
             code = '#if(' + args + ')';
@@ -33,9 +33,9 @@ function parser(code) {
             code = "#end";
             break;
         case "each":
-            var list = split[0];
+            var list = "$" + split[0];
             var as = split[1] || "as";
-            var item = split[2] || "$value";
+            var item = "$" + split[2] || "$value";
             var index = split[3];
             code = "#foreach(" + item + " in " + list + ")";
             if (index) {
@@ -46,7 +46,7 @@ function parser(code) {
             var param = split.shift();
             var con = split.join(" ");
             if (param && param == "if") {
-                code = "#elseif(" + con + ")";
+                code = "#elseif($" + con + ")";
             } else {
                 code = "#else";
             }
@@ -55,7 +55,7 @@ function parser(code) {
             code = "#include";
             break;
         default:
-            code = "${" + code + "}";
+            code = "$!{" + code + "}";
 
     }
     return code;
