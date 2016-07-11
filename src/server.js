@@ -12,7 +12,10 @@ walker.on('file', function (root, stat, next) {
 	next();
 });
 walker.on('end', function () {
-	console.log(files);
+	// console.log(files);
+	replaceFiles(files);
+});
+function replaceFiles(files) {
 	files.map(function (item) {
 		async.series([
             //读取目录模板
@@ -30,5 +33,6 @@ walker.on('end', function () {
 				fs.writeFile(item, data);
 			});
 	});
-});
+}
+
 
