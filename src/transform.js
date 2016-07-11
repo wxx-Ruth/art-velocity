@@ -1,32 +1,18 @@
-// export default {
-//     tool: tool
-// };
-function forEach(data, callback) {
-    var i, len;
-    if (Array.isArray(data)) {
-        data.forEach(function (item) {
-            callback(item);
-        })
-    } else {
-        for (i in data) {
-            callback(data[i]);
-        }
-    }
-}
+var util = require("./util");
 function transform(content, opt) {
     var openTag = opt && opt.openTag||"{{",
         closeTag = opt && opt.closeTag || "}}";
     var main = "";
-    forEach(content.split(openTag), function (code) {
+    util.each(content.split(openTag), function (code) {
         code = code.split(closeTag);
-        var $0 = code[0];
-        var $1 = code[1];
+        var left = code[0];
+        var right = code[1];
         if (code.length == 1) {
-            main += $0;
+            main += left;
         } else {
-            main += parser($0);
-            if ($1) {
-                main += $1;
+            main += parser(left);
+            if (right) {
+                main += right;
             }
         }
     });
