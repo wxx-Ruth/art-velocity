@@ -23,10 +23,10 @@ function parser(code) {
     code = code.replace("/^\s/", "");
     var split = code.split(" ");
     var key = split.shift();
-    var args = "$" + split.join("");
+    var args = split.join("");
     switch (key) {
         case "if":
-            code = '#if(' + args + ')';
+            code = '#if($' + args + ')';
             break;
         case "/if":
         case "/each":
@@ -52,10 +52,10 @@ function parser(code) {
             }
             break;
         case "include":
-            code = "#include";
+            code = "#parse(" + args + ")";
             break;
         default:
-            code = "$!{" + code + "}";
+            code = "${" + code + "}";
 
     }
     return code;
