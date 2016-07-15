@@ -2,19 +2,27 @@ var promise = require("bluebird");
 var fs = promise.promisifyAll(require("fs"));
 var transform = require("./transform");
 var path = require("path");
-var configUrl = "E:\\other\\art-velocity\\example";
 var async = require("async");
 var walk = require('walk'),
 	files = [];
+	
+var configUrl = path.join(__dirname,"../example");
 var walker = walk.walk(configUrl, { followLinks: false });
 walker.on('file', function (root, stat, next) {
 	files.push(root + '/' + stat.name);
 	next();
 });
 walker.on('end', function () {
-	// console.log(files);
 	replaceFiles(files);
 });
+walker.on('errors',errorsHandler);
+function errorsHandler(root, nodeStatsArray, next) {
+  nodeStatsArray.forEach(function (n) {
+    console.error("[ERROR] " + n.name)
+    console.error(n.error.message || (n.error.code + ": " + n.error.path));
+  });
+  next();
+}
 function replaceFiles(files) {
 	files.map(function (item) {
 		async.series([

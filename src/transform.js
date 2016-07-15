@@ -63,6 +63,9 @@ function parser(code) {
             if(!(/\$\w.+/g.test(key))){
                 code = outTag + output ;
             }
+            if(/\#\w.+/g.test(key)){
+                code = outTag + "esc.javascript(" + outTag + output.replace(/\#/g,"") +")";
+            }
     }
     return code;
 }

@@ -23,14 +23,14 @@
     #set(i = #foreach.index)
     #end
 ```
-注：art遍历  默认索引值{{$index}}，遍历的每一项值{{$value}}
+注：art遍历  默认索引值{{$index}}，遍历的每一项默认取值{{$value}}
 3.
 {{name}}编码输出，转义html字符
 ```
     ${name}
 
 ```
-{{#name}}不编码输出
+{{#name}}原样输出
 
 ```
     $esc.javascript($name);
