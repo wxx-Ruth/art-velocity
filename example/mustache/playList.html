@@ -1,0 +1,99 @@
+<div class="m-box" glue-component="page.playMovie.component.playList" style="display: none;" data-scroll-show="true" data-block="playList">
+    <div class="m-box-items">
+        <section class="m-title">
+            <h3 class="c-title-des">播放列表</h3>
+        </section>
+    </div>
+    <div class="m-box-items m-box-items-full" glue-component="page.playMovie.component.hotEnter" data-scroll-show="true" data-block="605251_hot">
+        <script data-node="hotEnter" type="text/tpl">
+            {{#list}}
+            <div class="m-topList m-toplist-borderT" data-rseat="605251_hot" glue-type="hotlistEnter" data-href="{{pageUrl}}">
+                <div class="topList-img">
+                    <a href="javascript:void(0);" class="topList-link" style="background-image:url({{picUrl}});">
+                        <!-- <div class="c-rb">
+                            <span class="c-date">{{duration}}</span>
+                        </div> -->
+                        <!-- 当前播放图标 -->
+                        <!--  <div class="c-videoplay">
+                            <i class="c-videoplay-icon c-videoplay-small"></i>
+                        </div> -->
+                        <!-- 当前播放图标 end-->
+                    </a>
+                </div>
+                <div class="topList-text">
+                    <a href="javascript:void(0);" class="topList-title topList-row-title">{{title}}</a>
+                    <em class="topList-type">{{description}}</em>
+                    <em class="topList-video">{{playCount}}次播放</em>
+                </div>
+            </div>
+            {{/list}}
+        </script>
+    </div>
+    <div class="m-box-items m-box-items-full" glue-node="playList">
+        <!-- 第一个m-toplist-top 追加类名称m-toplist-borderT -->
+        <script data-node="shortPlayTpl" type="text/tpl">
+            {{#list}}
+            <div class="m-topList {{selected}}" data-tvid="{{tvId}}" data-vid="{{vid}}" glue-type="currentPlay" data-rseat="605251_list">
+                <div class="topList-img">
+                    <a href="javascript:void(0);" class="topList-link" style="background-image:url({{imageUrl}});">
+                        <div class="c-rb">
+                            <span class="c-date">{{duration}}</span>
+                        </div>
+                        <!-- 当前播放图标 -->
+                        <div class="c-videoplay">
+                            <i class="c-videoplay-icon c-videoplay-small"></i>
+                        </div>
+                        <!-- 当前播放图标 end-->
+                    </a>
+                </div>
+                <div class="topList-text">
+                    <a href="javascript:void(0);" class="topList-title topList-row-title">{{name}}</a>
+                    <em class="topList-type">{{issueTime}}发布</em>
+                    <em class="topList-video">{{playCount}}次播放</em>
+                </div>
+            </div>
+            {{/list}}
+        </script>
+    </div>
+</div>
+<!-- 电视剧-视频信息 -->
+<div class="m-video-title">
+    <!-- vip 追加类名称c-title-vip -->
+    <h1 class="c-title"><a href="{{albumUrl}}" class="c-title-link">{{albumName}}：</a>第{{order}}集</h1>
+    <!-- video-info-btn 点击展开隐藏内容时追加类名称selected -->
+    <a data-node="desBtn" href="javascript:void(0);" class="video-info-btn"><i class="c-glyphicon c-glyphicon-arrowUp"></i></a>
+</div>
+{{#updateStrategy}}<div class="m-video-des">{{.}}</div>{{/updateStrategy}}
+<div class="m-video-data">
+    <span class="data-item">
+        <i class="c-glyphicon c-glyphicon-play"></i>
+        <span data-node="count" class="c-data-num"></span>
+    </span>
+    <span class="data-item {{^bossMixerAlbum}} hide {{/bossMixerAlbum}}">
+        <a href="http://serv.vip.iqiyi.com/order/preview.action?platform=97ae2982356f69d8&serviceCode=lyksc7aq36aedndk&pid=a0226bd958843452&fc=bf0f1bed39c1530c" class="c-video-openVip">开通VIP抢先看全集</a>
+    </span>
+</div>
+<!-- 默认隐藏类 hide，显示则移除类hide -->
+<div class="m-video-content">
+    <div data-node="moreInfo" class="video-content hide">
+        <div class="video-info">
+            <div class="video-type {{^cast.mainActors}} hide {{/cast.mainActors}}">主演：
+                {{#cast.mainActors}}
+                    <a href="{{url}}" class="c-type" data-rseat="605091_member">{{name}}</a>
+                {{/cast.mainActors}}
+            </div>
+            <div class="video-type {{^categories}} hide {{/categories}}">看点：
+                {{#categories}}
+                    <a href="{{url}}" class="c-type" data-rseat="605091_focus">{{name}}</a>
+                {{/categories}}
+            </div> 
+            本集简介：{{description}}
+        </div>
+        #parse('page/play/fragment/playRebuild/videoInfo/chart.html')
+        #parse('page/play/fragment/playRebuild/videoInfo/upDown.html')
+    </div>
+</div>
+<!-- 已顶 已踩提示 -->
+#parse('page/play/fragment/playRebuild/videoInfo/voteTip.html')
+<!-- 已顶 已踩提示 end-->
+<!-- 电视剧-视频信息 end-->
