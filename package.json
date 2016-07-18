@@ -29,7 +29,10 @@
     "bluebird": "^3.4.1",
     "walk": "^2.3.9"
   },
-  "bin":{
-    "transform": "./bin/app"
+  "bin": {
+    "transform": "./bin/app.js"
+  },
+  "devDependencies": {
+    "commander": "^2.9.0"
   }
 }

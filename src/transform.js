@@ -14,7 +14,7 @@ function transform(content, opt) {
         if (code.length == 1) {
             main += left;
         } else {
-            main += parser2(left);
+            main += parser(left,opt);
             if (right) {
                 main += right;
             }
@@ -22,7 +22,13 @@ function transform(content, opt) {
     });
     return main;
 }
-
+function  parser(code,style) {
+     if(style=="art"){
+        return parserArt(code);
+     }else{
+        return parserMustache(code);
+     } 
+}
 function parserArt(code) {
     code = code.replace("/^\s/", "");
     var splitCont = code.split(" ");
