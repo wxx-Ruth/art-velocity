@@ -6,7 +6,7 @@ var async = require("async");
 var walk = require('walk'),
 	files = [];
 	
-var configUrl = path.join(__dirname,"../example");
+var configUrl = path.join(__dirname,"../example/mustache");
 var walker = walk.walk(configUrl, { followLinks: false });
 walker.on('file', function (root, stat, next) {
 	files.push(root + '/' + stat.name);

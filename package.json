@@ -28,5 +28,8 @@
     "async": "^2.0.0-rc.6",
     "bluebird": "^3.4.1",
     "walk": "^2.3.9"
+  },
+  "bin":{
+    "transform": "./bin/app"
   }
 }
