@@ -47,13 +47,18 @@
 1.变量输出
 {{name}}转义输出
 {{{name}}}非转义输出
+
 2.存在时，遍历
 {{#list}} {{/list}}
+
 3.当list为null,undefined,false时输出
 {{^list}}{{/list}}
+
 4.枚举
 {{.}}
+
 5.引入子模板
 {{>partiral}}
+
 6.注释
 {{!comments}}
