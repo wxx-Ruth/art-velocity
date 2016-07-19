@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wxx-Ruth/art-velocity.git"
+    "url": "ssh://git@gitlab.qiyi.domain:10022/wangxinxiao/art-velocity.git"
   },
   "keywords": [
     "arttemplate",
@@ -20,10 +20,6 @@
   ],
   "author": "wxx",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/wxx-Ruth/art-velocity/issues"
-  },
-  "homepage": "https://github.com/wxx-Ruth/art-velocity#readme",
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "bluebird": "^3.4.1",
