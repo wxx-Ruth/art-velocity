@@ -5,44 +5,38 @@ var path = require("path");
 var async = require("async");
 var walk = require('walk'),
 	files = [];
-
-function tool(url,style) {
+function tool(url, style) {
+	fs.statAsync(url).then(function (stat) {
+		if (stat.isDirectory()) {
+			dirTransform(url,style);
+		} else {
+			fileTransform(url,style);
+		}
+	})
+}
+function dirTransform(url, style) {
 	var walker = walk.walk(url, {
 		followLinks: false
 	});
-	walker.on('file', function(root, stat, next) {
+	walker.on('file', function (root, stat, next) {
 		files.push(root + '/' + stat.name);
 		next();
 	});
-	walker.on('end', function() {
-		replaceFiles(files,style);
+	walker.on('end', function () {
+		files.map(function (item) {
+			fileTransform(item, style);
+		});
 	});
 	walker.on('errors', errorsHandler);
-
 }
-
-function replaceFiles(files) {
-	files.map(function(item) {
-		async.series([
-				//读取目录模板
-				function(callback) {
-					fs.readFile(item, "utf8", function(err, data) {
-						callback(null, data);
-					});
-				}
-			],
-			function(err, results) {
-				if (err) throw err;
-				var data = results[0];
-				// 转化语法
-				data = transform(data,style);
-				fs.writeFile(item, data);
-			});
+function fileTransform(file, style) {
+	fs.readFileAsync(file, "utf8").then(function (data) {
+		data = transform(data, style || "artTemplate");
+		fs.writeFileAsync(file, data);
 	});
 }
-
 function errorsHandler(root, nodeStatsArray, next) {
-	nodeStatsArray.forEach(function(n) {
+	nodeStatsArray.forEach(function (n) {
 		console.error("[ERROR] " + n.name)
 		console.error(n.error.message || (n.error.code + ": " + n.error.path));
 	});

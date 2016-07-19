@@ -1,20 +1,20 @@
-var util = require("./util");
+var _ = require("lodash");
 var item = "";
 var outTag = "$";
 
 function transform(content, opt) {
-    var openTag = opt && opt.openTag || "{{",
-        closeTag = opt && opt.closeTag || "}}";
+    var openTag = "{{",
+        closeTag = "}}";
     var main = "";
     var key = {};
-    util.each(content.split(openTag), function (code) {
+    _.forEach(content.split(openTag), function (code) {
         code = code.split(closeTag);
         var left = code[0];
         var right = code[1];
         if (code.length == 1) {
             main += left;
         } else {
-            main += parser(left,opt);
+            main += parser(left, opt);
             if (right) {
                 main += right;
             }
@@ -22,12 +22,12 @@ function transform(content, opt) {
     });
     return main;
 }
-function  parser(code,style) {
-     if(style=="art"){
+function parser(code, style) {
+    if (style == "artTemplate") {
         return parserArt(code);
-     }else{
+    } else if(style == "mustache"){
         return parserMustache(code);
-     } 
+    }
 }
 function parserArt(code) {
     code = code.replace("/^\s/", "");

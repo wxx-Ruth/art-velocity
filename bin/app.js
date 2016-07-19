@@ -7,20 +7,16 @@ program
 	.version(require("../package.json").version)
 	.usage("[options] [file path]")
 	.description("transform others to velocity")
-	.option('-A, --artTemplate <string>', 'parse arttemplate')
-	.option('-M, --mustache <string>', 'parse mustache')
+	.option('-A, --artTemplate', 'parse arttemplate')
+	.option('-M, --mustache', 'parse mustache')
 	.parse(process.argv);
-console.log(program.artTemplate);
 var pname = program.args[0];
-if (!pname) {
-	program.help();
-} else {
-	var configUrl = path.join(__dirname, program.artTemplate || program.mustache);
-	var style = "";
-	if (program.artTemplate) {
-		style = "art";
-	} else if (program.mustache) {
-		style = "mustache";
-	}
-	tool(configUrl, style);
+if (!pname) program.help();
+var configUrl = path.join(process.cwd(), pname);
+var style = "";
+if (program.artTemplate) {
+	style = "artTemplate";
+} else if (program.mustache) {
+	style = "mustache";
 }
+tool(configUrl, style);
