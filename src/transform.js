@@ -25,12 +25,12 @@ function transform(content, opt) {
 function parser(code, style) {
     if (style == "artTemplate") {
         return parserArt(code);
-    } else if(style == "mustache"){
+    } else if (style == "mustache") {
         return parserMustache(code);
     }
 }
 function parserArt(code) {
-    code = code.replace("/^\s/", "");
+    code = code.replace(/^\s/, "");
     var splitCont = code.split(" ");
     var key = splitCont.shift();
     var args = splitCont.join("");
@@ -79,13 +79,17 @@ function parserArt(code) {
     return code;
 }
 function parserMustache(code) {
-    code = code.replace("/^\s/", "");
+    code = code.replace(/^\s/, "");
     if (/^\#\w.+/.test(code)) { //{{#list}}
-        code = "#foreach(" + outTag + "item in " + code.replace(/^\#/, outTag) + ")";
+        var key = "#if(" + outTag + "{" + code.replace(/^\#/, outTag) + "})\n";
+        code = key + "#foreach(" + outTag + "item in " + code.replace(/^\#/, outTag) + ")";
         item = "item";
     } else if (/^\/\w.+/.test(code)) { //{{/list}}
-        item = "";
-        code = "#end";
+        code = "#end\n";
+        if (item != "") {
+            code += "#end";
+            item = "";
+        }
     } else if (/^\>\s\w+/.test(code)) { //子模板引入
         code = "#parse(" + code.replace(/^\>\s/, "") + ")";
     } else if (/^\w.+/.test(code)) { //变量输出
@@ -99,4 +103,5 @@ function parserMustache(code) {
     }
     return code;
 }
+
 module.exports = transform;

@@ -8,9 +8,9 @@ var walk = require('walk'),
 function tool(url, style) {
 	fs.statAsync(url).then(function (stat) {
 		if (stat.isDirectory()) {
-			dirTransform(url,style);
+			dirTransform(url, style);
 		} else {
-			fileTransform(url,style);
+			fileTransform(url, style);
 		}
 	})
 }
@@ -32,7 +32,11 @@ function dirTransform(url, style) {
 function fileTransform(file, style) {
 	fs.readFileAsync(file, "utf8").then(function (data) {
 		data = transform(data, style || "artTemplate");
-		fs.writeFileAsync(file, data);
+		return fs.writeFileAsync(file, data);
+	}).then(function (result) {
+		console.log(file + "文件转换语法成功！");
+	}).catch(function (err) {
+		console.log(err);
 	});
 }
 function errorsHandler(root, nodeStatsArray, next) {
